@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'python_bridge.dart';
+import 'dart:convert';
 
 enum CameraType {
   raspberryPi,
@@ -140,14 +141,19 @@ class CameraService {
       }
 
       // Process the frame data from the script
-      // Note: In a real implementation, you would process binary frame data
-      // This is a placeholder for the actual frame processing logic
       _detectionSubscription = cameraStream.listen(
         (data) {
-          // In a real implementation, this would process binary image data
-          // For demonstration, we'll just create a placeholder image
-          // You'd need a more complex implementation to handle actual video frames
-          streamController.add(Image.asset('assets/placeholder_frame.png'));
+          // Decode base64-encoded frames sent from Python script
+          try {
+            final trimmed = data.trim();
+            if (trimmed.startsWith('FRAME:')) {
+              final base64Str = trimmed.substring('FRAME:'.length);
+              final bytes = base64Decode(base64Str);
+              streamController.add(Image.memory(bytes));
+            }
+          } catch (e) {
+            debugPrint('Error decoding frame: $e');
+          }
         },
         onError: (error) {
           debugPrint('Camera stream error: $error');

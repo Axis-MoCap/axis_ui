@@ -928,7 +928,7 @@ class _MocapHomePageState extends State<MocapHomePage>
                                 AspectRatio(
                                   aspectRatio: 4 / 3,
                                   child: CameraFeedView(
-                                    title: 'Front View',
+                                    title: 'Camera View',
                                     isRecording: _isRecording,
                                   ),
                                 ),
@@ -952,7 +952,7 @@ class _MocapHomePageState extends State<MocapHomePage>
                                   // Front camera
                                   Expanded(
                                     child: CameraFeedView(
-                                      title: 'Front View',
+                                      title: 'Camera View',
                                       isRecording: _isRecording,
                                     ),
                                   ),
